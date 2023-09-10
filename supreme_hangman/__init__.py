@@ -1,14 +1,14 @@
 import os
 from moviepy.editor import VideoFileClip
 import pygame as pg
-from goofy_hangman.game_manager import GameManager
+from supreme_hangman.game_manager import GameManager
 
 pg.mixer.init()
 pg.init()
 
 DISPLAY_WIDTH, DISPLAY_HEIGHT = 800, 600
 game_display: pg.Surface = pg.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
-pg.display.set_caption('Ultimate Hangman')
+pg.display.set_caption("Supreme Hangman")
 clock: pg.time.Clock = pg.time.Clock()
 
 LOGO_IMAGE = pg.image.load(os.path.join("assets", "images", "supreme_logo.png"))

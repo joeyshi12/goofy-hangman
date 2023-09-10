@@ -1,5 +1,5 @@
 def main():
-    from goofy_hangman import game_manager
+    from supreme_hangman import game_manager
     game_manager.start()
 
 

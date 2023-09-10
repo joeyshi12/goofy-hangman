@@ -1,5 +1,5 @@
 import pygame as pg
-import goofy_hangman as ghm
+import supreme_hangman as shm
 
 
 class Button:
@@ -18,22 +18,22 @@ class Button:
         if event.type == pg.MOUSEMOTION:
             self.__update_is_hovered()
         elif event.type == pg.MOUSEBUTTONUP and self.on_click is not None and self.is_hovered:
-            ghm.BUTTON_SOUND.play()
+            shm.BUTTON_SOUND.play()
             self.on_click()
 
     def render(self):
         if self.is_hovered:
-            pg.draw.rect(ghm.game_display,
+            pg.draw.rect(shm.game_display,
                          self.hover_color,
                          (self.left - 10, self.top - 10, self.width + 20, self.height + 20))
         else:
-            pg.draw.rect(ghm.game_display,
+            pg.draw.rect(shm.game_display,
                          self.background_color,
                          (self.left, self.top, self.width, self.height))
         button_font = pg.font.Font("freesansbold.ttf", 20)
-        text_surf, text_rect = create_text_surface(self.text, button_font, ghm.RED)
+        text_surf, text_rect = create_text_surface(self.text, button_font, shm.RED)
         text_rect.center = ((self.left + (self.width / 2)), (self.top + (self.height / 2)))
-        ghm.game_display.blit(text_surf, text_rect)
+        shm.game_display.blit(text_surf, text_rect)
 
     def __update_is_hovered(self):
         mouse_x, mouse_y = pg.mouse.get_pos()
@@ -41,25 +41,25 @@ class Button:
 
 
 def draw_box(x1, x2, y1, y2, w):
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x1, y1), (x2, y1), w)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x2, y1), (x2, y2), w)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x2, y2), (x1, y2), w)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x1, y2), (x1, y1), w)
+    pg.draw.line(shm.game_display, shm.BLACK, (x1, y1), (x2, y1), w)
+    pg.draw.line(shm.game_display, shm.BLACK, (x2, y1), (x2, y2), w)
+    pg.draw.line(shm.game_display, shm.BLACK, (x2, y2), (x1, y2), w)
+    pg.draw.line(shm.game_display, shm.BLACK, (x1, y2), (x1, y1), w)
 
 
 def draw_stand(x, y):
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x, y), (x, y - 240), 5)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x - 40, y), (x + 80, y), 5)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x, y - 240), (x + 120, y - 240), 5)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x + 120, y - 240), (x + 120, y - 210), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x, y), (x, y - 240), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x - 40, y), (x + 80, y), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x, y - 240), (x + 120, y - 240), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x + 120, y - 240), (x + 120, y - 210), 5)
 
 
 def draw_stickman(x, y):
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x, y - 55), (x, y), 5)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x, y - 40), (x - 25, y - 20), 5)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x, y - 40), (x + 25, y - 20), 5)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x, y), (x - 20, y + 35), 5)
-    pg.draw.line(ghm.game_display, ghm.BLACK, (x, y), (x + 20, y + 35), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x, y - 55), (x, y), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x, y - 40), (x - 25, y - 20), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x, y - 40), (x + 25, y - 20), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x, y), (x - 20, y + 35), 5)
+    pg.draw.line(shm.game_display, shm.BLACK, (x, y), (x + 20, y + 35), 5)
 
 
 def create_text_surface(text, font, color):
@@ -71,4 +71,4 @@ def draw_text(msg, x, y, size, color):
     small_text = pg.font.Font("freesansbold.ttf", size)
     text_surf, text_rect = create_text_surface(msg, small_text, color)
     text_rect.center = (x, y)
-    ghm.game_display.blit(text_surf, text_rect)
+    shm.game_display.blit(text_surf, text_rect)

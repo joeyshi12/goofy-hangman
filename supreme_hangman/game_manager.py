@@ -1,8 +1,8 @@
 import sys
 import pygame as pg
 
-import goofy_hangman as ghm
-from goofy_hangman.scenes import MenuScene
+import supreme_hangman as shm
+from supreme_hangman.scenes import MenuScene
 
 
 class GameManager:
@@ -18,7 +18,7 @@ class GameManager:
                 self.scene.handle_event(event)
             self.scene.render()
             pg.display.update()
-            ghm.clock.tick(60)
+            shm.clock.tick(60)
 
     def set_scene(self, scene):
         self.scene = scene

@@ -46,16 +46,14 @@ def button(msg, x, y, w, h, ic, ac, action=None):
 def start():
     ghm.pg.mixer.music.load('assets/sounds/opening.wav')
     ghm.pg.mixer.music.play(-1)
-    logo = ghm.pg.image.load("assets/images/supreme_logo.png")
-    hanging_knuckles = ghm.pg.image.load("assets/images/sad.png")
     while True:
         for event in ghm.pg.event.get():
             if event.type == ghm.pg.QUIT:
                 ghm.pg.quit()
                 quit()
         ghm.game_display.fill(ghm.WHITE)
-        ghm.game_display.blit(logo, (30, -30))
-        ghm.game_display.blit(hanging_knuckles, (450, 250))
+        ghm.game_display.blit(ghm.LOGO_IMAGE, (30, -30))
+        ghm.game_display.blit(ghm.HANGING_KNUCKLES_IMAGE, (450, 250))
         ghm.pg.draw.line(ghm.game_display, ghm.BRIGHT_RED, (586, 150), (586, 250), 8)
         button("Play", 100, 250, 200, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "play")
         button("Options", 100, 350, 200, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "option")
@@ -65,9 +63,6 @@ def start():
 
 
 def game_select():
-    i_sleep = ghm.pg.image.load("assets/images/i_sleep.png")
-    real = ghm.pg.image.load("assets/images/real.png")
-    power_of_god_and_anime = ghm.pg.image.load("assets/images/power_of_god_and_anime.png")
     DISPLAY_WIDTH, DISPLAY_HEIGHT = ghm.game_display.get_size()
     while True:
         for event in ghm.pg.event.get():
@@ -76,12 +71,10 @@ def game_select():
                 quit()
         ghm.game_display.fill(ghm.WHITE)
         text("Choose your difficulty", (DISPLAY_WIDTH / 2), (150), 50, ghm.RED)
-        ghm.game_display.blit(i_sleep,
-                         (DISPLAY_WIDTH * 0.1, 250))
-        ghm.game_display.blit(real, (DISPLAY_WIDTH * 0.38, 250))
-        ghm.game_display.blit(power_of_god_and_anime, (DISPLAY_WIDTH * 0.7 - 10, 250))
-        button("EAZY", DISPLAY_WIDTH * 0.1 - 20, 450, 200, 50, ghm.GREEN, ghm.BRIGHT_GREEN,
-               "eazy")
+        ghm.game_display.blit(ghm.EASY_DIFFICULTY_IMAGE, (DISPLAY_WIDTH * 0.1, 250))
+        ghm.game_display.blit(ghm.MEDIUM_DIFFICULTY_IMAGE, (DISPLAY_WIDTH * 0.38, 250))
+        ghm.game_display.blit(ghm.HARD_DIFFICULTY_IMAGE, (DISPLAY_WIDTH * 0.7 - 10, 250))
+        button("EAZY", DISPLAY_WIDTH * 0.1 - 20, 450, 200, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "eazy")
         button("MEDIUM", DISPLAY_WIDTH * 0.38, 450, 200, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "medium")
         button("EXPERTS ONLY", DISPLAY_WIDTH * 0.7 - 20, 450, 200, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "hard")
         ghm.pg.display.update()
@@ -117,12 +110,9 @@ def death_screen(t, s):
                 quit()
         ghm.game_display.fill(ghm.WHITE)
         ghm.game_display.blit(lost_image, (0, 0))
-        text("NO SUPREME FOR YOU", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3), 50,
-             ghm.RED)
-        text("Time: " + str(int(t)) + " seconds", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 70), 25,
-             ghm.RED)
-        text("Score: " + str(s) + " fails", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 100), 25,
-             ghm.RED)
+        text("NO SUPREME FOR YOU", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3), 50, ghm.RED)
+        text("Time: " + str(int(t)) + " seconds", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 70), 25, ghm.RED)
+        text("Score: " + str(s) + " fails", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 100), 25, ghm.RED)
         button("Quit", 150, 450, 120, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "quit")
         button("Menu", 550, 450, 120, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "intro")
         ghm.pg.display.update()
@@ -139,12 +129,9 @@ def end_screen(t, s):
                 quit()
         ghm.game_display.fill(ghm.BLUE)
         ghm.game_display.blit(winning, (170, 15))
-        text("SUPREME WIN", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 150), 50,
-             ghm.GREEN)
-        text("Time: " + str(int(t)) + " seconds", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 190), 25,
-             ghm.GREEN)
-        text("Score: " + str(s) + " fails", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 220), 25,
-             ghm.GREEN)
+        text("SUPREME WIN", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 150), 50, ghm.GREEN)
+        text("Time: " + str(int(t)) + " seconds", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 190), 25, ghm.GREEN)
+        text("Score: " + str(s) + " fails", int(DISPLAY_WIDTH / 2), int(DISPLAY_HEIGHT / 3 + 220), 25, ghm.GREEN)
         button("Quit", 150, 450, 120, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "quit")
         button("Menu", 550, 450, 120, 50, ghm.GREEN, ghm.BRIGHT_GREEN, "intro")
         ghm.pg.display.update()

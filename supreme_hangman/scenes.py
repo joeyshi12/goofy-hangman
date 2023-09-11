@@ -171,18 +171,19 @@ class HangmanScene(Scene):
             button.render()
 
     def __submit_guess(self):
+        if len(self.text_input) == 1 and self.text_input in self.word:
+            self.guessed_letters.add(self.text_input)
+            self.hangman_text = " ".join([letter if letter in self.guessed_letters else "_" for letter in self.word])
+
         if self.text_input == self.word or set(self.word) == self.guessed_letters:
             self.game.set_scene(WinnerScene(self.game, self.time, self.failed_attempts))
         elif self.text_input == "omae wa mou shindeiru":
             shm.MEME_VIDEO.preview()
             self.game.set_scene(WinnerScene(self.game, self.time, -9999999999))
-        else:
-            if len(self.text_input) == 1 and self.text_input in self.word:
-                self.guessed_letters.add(self.text_input)
-                self.hangman_text = " ".join([letter if letter in self.guessed_letters else "_" for letter in self.word])
-            else:
-                self.failed_attempts += 1
-            self.text_input = ""
+        elif self.text_input not in self.guessed_letters:
+            self.failed_attempts += 1
+
+        self.text_input = ""
         if self.failed_attempts >= HangmanScene.LIVES:
             self.game.set_scene(LoserScene(self.game, self.time, self.failed_attempts))
 

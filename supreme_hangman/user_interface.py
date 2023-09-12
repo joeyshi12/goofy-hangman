@@ -54,14 +54,6 @@ def draw_stand(x, y):
     pg.draw.line(shm.game_display, shm.BLACK, (x + 120, y - 240), (x + 120, y - 210), 5)
 
 
-def draw_stickman(x, y):
-    pg.draw.line(shm.game_display, shm.BLACK, (x, y - 55), (x, y), 5)
-    pg.draw.line(shm.game_display, shm.BLACK, (x, y - 40), (x - 25, y - 20), 5)
-    pg.draw.line(shm.game_display, shm.BLACK, (x, y - 40), (x + 25, y - 20), 5)
-    pg.draw.line(shm.game_display, shm.BLACK, (x, y), (x - 20, y + 35), 5)
-    pg.draw.line(shm.game_display, shm.BLACK, (x, y), (x + 20, y + 35), 5)
-
-
 def create_text_surface(text, font, color):
     text_surface = font.render(text, True, color)
     return text_surface, text_surface.get_rect()

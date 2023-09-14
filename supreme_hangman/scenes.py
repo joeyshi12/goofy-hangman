@@ -25,8 +25,9 @@ class MenuScene(Scene):
         self.game = game
         self.buttons = [
             ui.Button("Play", 100, 250, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_select_difficulty),
-            ui.Button("Options", 100, 350, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_options),
-            ui.Button("Exit", 100, 450, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, quit_game)
+            ui.Button("Multiplayer", 100, 320, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_multiplayer),
+            ui.Button("Options", 100, 390, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_options),
+            ui.Button("Exit", 100, 460, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, quit_game)
         ]
         pg.mixer.music.load(os.path.join("assets", "sounds", "opening.wav"))
         pg.mixer.music.play(-1)
@@ -45,6 +46,9 @@ class MenuScene(Scene):
 
     def __navigate_to_select_difficulty(self):
         self.game.set_scene(DifficultySelectScene(self.game))
+
+    def __navigate_to_multiplayer(self):
+        self.game.set_scene(MultiplayerScene(self.game))
 
     def __navigate_to_options(self):
         self.game.set_scene(OptionsScene(self.game))
@@ -98,13 +102,28 @@ class DifficultySelectScene(Scene):
         self.game.set_scene(HangmanScene(self.game, difficulty))
 
 
+class MultiplayerScene(Scene):
+    def __init__(self, game):
+        self.game = game
+        self.buttons = [
+            ui.Button("Back", shm.DISPLAY_WIDTH * 0.1 - 20, 450, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, lambda: self.__navigate_to_hangman("eazy")),
+            ui.Button("", shm.DISPLAY_WIDTH * 0.38, 450, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, lambda: self.__navigate_to_hangman("medium")),
+            ui.Button("EXPERTS ONLY", shm.DISPLAY_WIDTH * 0.7 - 20, 450, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, lambda: self.__navigate_to_hangman("hard"))
+        ]
+
+    def handle_event(self, event):
+        pass
+
+    def render(self):
+        shm.game_display.fill(shm.WHITE)
+
+
 class HangmanScene(Scene):
     # TODO: include more words
     EASY_WORDS: List[str] = ["string", "planet", "random", "vector", "genius", "python", "volume", "poetry"]
     MEDIUM_WORDS: List[str] = ["trampoline", "aftershock", "bankruptcy", "monarchist"]
     HARD_WORDS: List[str] = ["misconjugatedly", "dermatoglyphics"]
     LIVES: int = 7
-    MAX_INPUT_LENGTH = 21
 
     def __init__(self, game, difficulty):
         self.game = game
@@ -118,7 +137,7 @@ class HangmanScene(Scene):
         else:
             raise Exception("Invalid difficulty")
 
-        self.text_input = ""
+        self.text_input = ui.TextInput(50, 310, 230, 270)
         self.guessed_letters = set()
         self.hangman_text = " ".join(["_"] * len(self.word))
         self.failed_attempts = 0
@@ -133,22 +152,17 @@ class HangmanScene(Scene):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RETURN:
                 self.__submit_guess()
-            elif event.key == pg.K_BACKSPACE:
-                if len(self.text_input) > 0:
-                    self.text_input = self.text_input[:-1]
-            elif len(self.text_input) <= HangmanScene.MAX_INPUT_LENGTH:
-                user_input = event.dict.get("unicode")
-                self.text_input += user_input
+            else:
+                self.text_input.handle_event(event)
         for button in self.buttons:
             button.handle_event(event)
 
     def render(self):
         shm.game_display.fill(shm.WHITE)
         self.time += 1/60
-        ui.draw_box(50, 310, 230, 270, 5)
+        self.text_input.render()
         ui.draw_box(shm.DISPLAY_WIDTH * 0.5, shm.DISPLAY_WIDTH - 25, 25, shm.DISPLAY_HEIGHT - 250, 5)
         ui.draw_text("Guess the Word!", 180, 100, 30, shm.RED)
-        ui.draw_text(self.text_input, 180, 250, 20, shm.RED)
         ui.draw_text(self.hangman_text, shm.DISPLAY_WIDTH * 0.5, shm.DISPLAY_HEIGHT - 100, 50, shm.RED)
         ui.draw_text("Time:", 538, 375, 20, shm.RED)
         ui.draw_text(str(int(self.time)), 625, 375, 20, shm.RED)
@@ -171,19 +185,21 @@ class HangmanScene(Scene):
             button.render()
 
     def __submit_guess(self):
-        if len(self.text_input) == 1 and self.text_input in self.word:
-            self.guessed_letters.add(self.text_input)
+        text_content = self.text_input.content
+
+        if len(text_content) == 1 and text_content in self.word:
+            self.guessed_letters.add(text_content)
             self.hangman_text = " ".join([letter if letter in self.guessed_letters else "_" for letter in self.word])
 
-        if self.text_input == self.word or set(self.word) == self.guessed_letters:
+        if text_content == self.word or set(self.word) == self.guessed_letters:
             self.game.set_scene(WinnerScene(self.game, self.time, self.failed_attempts))
-        elif self.text_input == "omae wa mou shindeiru":
+        elif text_content == "omae wa mou shindeiru":
             shm.MEME_VIDEO.preview()
             self.game.set_scene(WinnerScene(self.game, self.time, -9999999999))
-        elif self.text_input not in self.guessed_letters:
+        elif text_content not in self.guessed_letters:
             self.failed_attempts += 1
 
-        self.text_input = ""
+        self.text_input.clear()
         if self.failed_attempts >= HangmanScene.LIVES:
             self.game.set_scene(LoserScene(self.game, self.time, self.failed_attempts))
 

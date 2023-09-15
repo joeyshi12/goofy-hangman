@@ -50,7 +50,7 @@ class TextInput:
         self.__update_display_text()
 
     def handle_event(self, event: pg.event.Event):
-        if event.type != pg.KEYDOWN:
+        if event.type != pg.KEYDOWN or event.key == pg.K_RETURN:
             return
         if event.key == pg.K_BACKSPACE:
             self.content = self.content[:-1]
@@ -61,7 +61,7 @@ class TextInput:
         self.__update_display_text()
 
     def render(self):
-        draw_box(self.left, self.top, self.width, self.height, 5)
+        draw_box(self.left, self.left + self.width, self.top, self.top + self.height, 5)
         shm.game_display.blit(self.text_surface, self.text_rect)
 
     def clear(self):
@@ -71,18 +71,25 @@ class TextInput:
     def __update_display_text(self):
         self.text_surface = TextInput.FONT.render(self.content, True, shm.RED)
         self.text_rect = self.text_surface.get_rect()
-        self.text_rect.center = (180, 250)
+        self.text_rect.midleft = (self.left + 5, self.top + self.height / 2)
 
 
 class DisplayText:
-    def __init__(self, msg, x, y, size, color):
-        font = pg.font.Font("freesansbold.ttf", size)
-        self.text_surface = font.render(msg, True, color)
-        self.text_rect = self.text_surface.get_rect()
-        self.text_rect.center = (x, y)
+    def __init__(self, message, x, y, size, color):
+        self.x = x
+        self.y = y
+        self.size = size
+        self.color = color
+        self.update_message(message)
 
     def render(self):
         shm.game_display.blit(self.text_surface, self.text_rect)
+
+    def update_message(self, message):
+        font = pg.font.Font("freesansbold.ttf", self.size)
+        self.text_surface = font.render(message, True, self.color)
+        self.text_rect = self.text_surface.get_rect()
+        self.text_rect.center = (self.x, self.y)
 
 
 def draw_box(x1, x2, y1, y2, w):
@@ -97,15 +104,3 @@ def draw_stand(x, y):
     pg.draw.line(shm.game_display, shm.BLACK, (x - 40, y), (x + 80, y), 5)
     pg.draw.line(shm.game_display, shm.BLACK, (x, y - 240), (x + 120, y - 240), 5)
     pg.draw.line(shm.game_display, shm.BLACK, (x + 120, y - 240), (x + 120, y - 210), 5)
-
-
-def create_text_surface(text, font, color):
-    text_surface = font.render(text, True, color)
-    return text_surface, text_surface.get_rect()
-
-
-def draw_text(msg, x, y, size, color):
-    small_text = pg.font.Font("freesansbold.ttf", size)
-    text_surf, text_rect = create_text_surface(msg, small_text, color)
-    text_rect.center = (x, y)
-    shm.game_display.blit(text_surf, text_rect)

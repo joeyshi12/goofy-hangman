@@ -1,3 +1,6 @@
+import os
+import pygame as pg
+
 import supreme_hangman as shm
 import supreme_hangman.user_interface as ui
 import supreme_hangman.scenes as scenes
@@ -6,6 +9,7 @@ import supreme_hangman.scenes as scenes
 class WinnerScene(scenes.Scene):
     def __init__(self, game, time, score):
         self.game = game
+        self.win_image = pg.image.load(os.path.join("assets", "images", "winning.png"))
         self.display_messages = [
             ui.DisplayText("SUPREME WIN", int(shm.DISPLAY_WIDTH / 2), int(shm.DISPLAY_HEIGHT / 3 + 150), 50, shm.GREEN),
             ui.DisplayText("Time: " + str(int(time)) + " seconds", int(shm.DISPLAY_WIDTH / 2), int(shm.DISPLAY_HEIGHT / 3 + 190), 25, shm.GREEN),
@@ -22,7 +26,7 @@ class WinnerScene(scenes.Scene):
 
     def render(self):
         shm.game_display.fill(shm.BLUE)
-        shm.game_display.blit(shm.WIN_IMAGE, (170, 15))
+        shm.game_display.blit(self.win_image, (170, 15))
         for display_text in self.display_messages:
             display_text.render()
         for button in self.buttons:

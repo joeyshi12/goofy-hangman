@@ -1,3 +1,6 @@
+import os
+import pygame as pg
+
 import supreme_hangman as shm
 import supreme_hangman.user_interface as ui
 import supreme_hangman.scenes as scenes
@@ -6,6 +9,7 @@ import supreme_hangman.scenes as scenes
 class OptionsScene(scenes.Scene):
     def __init__(self, game):
         self.game = game
+        self.burning_knuckles_image = pg.image.load(os.path.join("assets", "images", "knuckles.png"))
         self.display_messages = [
             ui.DisplayText("THIS IS NOT DA WEI", int(shm.DISPLAY_WIDTH / 2), int(shm.DISPLAY_HEIGHT / 2), 50, shm.GREEN)
         ]
@@ -19,7 +23,7 @@ class OptionsScene(scenes.Scene):
 
     def render(self):
         shm.game_display.fill(shm.WHITE)
-        shm.game_display.blit(shm.BURNING_KNUCKLES_IMAGE, (0, 0))
+        shm.game_display.blit(self.burning_knuckles_image, (0, 0))
         for display_text in self.display_messages:
             display_text.render()
         for button in self.buttons:

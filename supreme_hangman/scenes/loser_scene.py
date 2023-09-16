@@ -1,5 +1,6 @@
 import os
 import pygame as pg
+
 import supreme_hangman as shm
 import supreme_hangman.user_interface as ui
 import supreme_hangman.scenes as scenes
@@ -8,6 +9,7 @@ import supreme_hangman.scenes as scenes
 class LoserScene(scenes.Scene):
     def __init__(self, game, time, score):
         self.game = game
+        self.lose_image = pg.image.load(os.path.join("assets", "images", "lost_image.png"))
         self.display_messages = [
             ui.DisplayText("NO SUPREME FOR YOU", int(shm.DISPLAY_WIDTH / 2), int(shm.DISPLAY_HEIGHT / 3), 50, shm.RED),
             ui.DisplayText("Time: " + str(int(time)) + " seconds", int(shm.DISPLAY_WIDTH / 2), int(shm.DISPLAY_HEIGHT / 3 + 70), 25, shm.RED),
@@ -26,7 +28,7 @@ class LoserScene(scenes.Scene):
 
     def render(self):
         shm.game_display.fill(shm.WHITE)
-        shm.game_display.blit(shm.LOSE_IMAGE, (0, 0))
+        shm.game_display.blit(self.lose_image, (0, 0))
         for display_text in self.display_messages:
             display_text.render()
         for button in self.buttons:

@@ -2,6 +2,8 @@ import os
 import random
 from typing import List
 import pygame as pg
+from moviepy.editor import VideoFileClip
+
 import supreme_hangman as shm
 import supreme_hangman.user_interface as ui
 import supreme_hangman.scenes as scenes
@@ -31,16 +33,21 @@ class HangmanScene(scenes.Scene):
         self.hangman_text = " ".join(["_"] * len(self.word))
         self.failed_attempts = 0
         self.time = 0
-
+        self.meme_video = VideoFileClip(os.path.join("assets", "videos", "movie.mp4"))
         self.buttons = [
             ui.Button("Enter", 130, 300, 100, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__submit_guess)
         ]
-        self.guess_the_word_display_text = ui.DisplayText("Guess the Word!", 180, 100, 30, shm.RED)
         self.hangman_display_text = ui.DisplayText(self.hangman_text, shm.DISPLAY_WIDTH * 0.5, shm.DISPLAY_HEIGHT - 100, 50, shm.RED)
-        self.time_label_display_text = ui.DisplayText("Time:", 538, 375, 20, shm.RED)
         self.time_value_display_text = ui.DisplayText(str(int(self.time)), 625, 375, 20, shm.RED)
-        self.fails_label_display_text = ui.DisplayText("Fails:", 540, 400, 20, shm.RED)
         self.num_fails_display_text = ui.DisplayText(str(self.failed_attempts) + "/" + str(HangmanScene.LIVES), 640, 400, 20, shm.RED)
+        self.display_messages = [
+            ui.DisplayText("Guess the Word!", 180, 100, 30, shm.RED),
+            self.hangman_display_text,
+            ui.DisplayText("Time:", 538, 375, 20, shm.RED),
+            self.time_value_display_text,
+            ui.DisplayText("Fails:", 540, 400, 20, shm.RED),
+            self.num_fails_display_text
+        ]
 
         pg.mixer.music.load(os.path.join("assets", "sounds", "wii.mp3"))
         pg.mixer.music.play(-1)
@@ -63,12 +70,9 @@ class HangmanScene(scenes.Scene):
         ui.draw_box(shm.DISPLAY_WIDTH * 0.5, shm.DISPLAY_WIDTH - 25, 25, shm.DISPLAY_HEIGHT - 250, 5)
         ui.draw_stand(480, 305)
 
-        self.guess_the_word_display_text.render()
-        self.hangman_display_text.render()
-        self.time_label_display_text.render()
-        self.time_value_display_text.render()
-        self.fails_label_display_text.render()
-        self.num_fails_display_text.render()
+        for display_text in self.display_messages:
+            display_text.render()
+
         self.text_input.render()
 
         if self.failed_attempts >= 1:
@@ -98,11 +102,11 @@ class HangmanScene(scenes.Scene):
         if text_content == self.word or set(self.word) == self.guessed_letters:
             self.game.set_scene(scenes.WinnerScene(self.game, self.time, self.failed_attempts))
         elif text_content == "omae wa mou shindeiru":
-            shm.MEME_VIDEO.preview()
+            self.meme_video.preview()
             self.game.set_scene(scenes.WinnerScene(self.game, self.time, -9999999999))
         elif text_content not in self.guessed_letters:
             self.failed_attempts += 1
-            self.num_fails_display_text.update_message(str(self.failed_attempts))
+            self.num_fails_display_text.update_message(f"{self.failed_attempts}/{HangmanScene.LIVES}")
 
         self.text_input.clear()
         if self.failed_attempts >= HangmanScene.LIVES:

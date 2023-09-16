@@ -36,7 +36,7 @@ class MultiplayerScene(scenes.Scene):
     def __navigate_to_menu(self):
         self.game.set_scene(scenes.MenuScene(self.game))
 
-    async def __click_host_game(self):
+    def __click_host_game(self):
         if self.socket is None:
             tokens = self.text_input.content.split(":")
             if len(tokens) != 2 or not tokens[1].isdigit():

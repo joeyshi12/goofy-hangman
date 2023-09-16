@@ -1,6 +1,7 @@
 import os
 import random
 import pygame as pg
+
 import supreme_hangman as shm
 import supreme_hangman.user_interface as ui
 import supreme_hangman.scenes as scenes
@@ -9,6 +10,8 @@ import supreme_hangman.scenes as scenes
 class MenuScene(scenes.Scene):
     def __init__(self, game):
         self.game = game
+        self.logo_image = pg.image.load(os.path.join("assets", "images", "supreme_logo.png"))
+        self.hanging_knuckles_image = pg.image.load(os.path.join("assets", "images", "sad.png"))
         self.display_messages = []
         self.buttons = [
             ui.Button("Play", 100, 250, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_select_difficulty),
@@ -26,8 +29,8 @@ class MenuScene(scenes.Scene):
 
     def render(self):
         shm.game_display.fill(shm.WHITE)
-        shm.game_display.blit(shm.LOGO_IMAGE, (30, -30))
-        shm.game_display.blit(shm.HANGING_KNUCKLES_IMAGE, (450, 250))
+        shm.game_display.blit(self.logo_image, (30, -30))
+        shm.game_display.blit(self.hanging_knuckles_image, (450, 250))
         pg.draw.line(shm.game_display, shm.BRIGHT_RED, (586, 150), (586, 250), 8)
         for display_text in self.display_messages:
             display_text.render()

@@ -37,4 +37,5 @@ class DifficultySelectScene(scenes.Scene):
             button.render()
 
     def __navigate_to_hangman(self, difficulty):
+        pg.mixer.music.stop()
         self.game.set_scene(scenes.HangmanScene(self.game, difficulty))

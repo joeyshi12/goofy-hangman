@@ -1,3 +1,4 @@
+import os
 import pygame as pg
 import supreme_hangman as shm
 
@@ -13,12 +14,13 @@ class Button:
         self.hover_color = hover_color
         self.on_click = on_click
         self.is_hovered = False
+        self.sound = pg.mixer.Sound(os.path.join("assets", "sounds", "button.wav"))
 
     def handle_event(self, event: pg.event.Event):
         if event.type == pg.MOUSEMOTION:
             self.__update_is_hovered()
         elif event.type == pg.MOUSEBUTTONUP and self.on_click is not None and self.is_hovered:
-            shm.BUTTON_SOUND.play()
+            self.sound.play()
             self.on_click()
 
     def render(self):

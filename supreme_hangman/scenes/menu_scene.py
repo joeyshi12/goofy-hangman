@@ -15,13 +15,13 @@ class MenuScene(scenes.Scene):
         self.display_messages = []
         self.buttons = [
             ui.Button("Play", 100, 250, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_select_difficulty),
-            #ui.Button("Multiplayer", 100, 320, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_multiplayer),
             ui.Button("Multiplayer", 100, 320, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__add_single_player_message),
             ui.Button("Options", 100, 390, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, self.__navigate_to_options),
             ui.Button("Exit", 100, 460, 200, 50, shm.GREEN, shm.BRIGHT_GREEN, scenes.quit_game)
         ]
-        pg.mixer.music.load(os.path.join("assets", "sounds", "opening.wav"))
-        pg.mixer.music.play(-1)
+        if not pg.mixer.music.get_busy():
+            pg.mixer.music.load(os.path.join("assets", "sounds", "opening.wav"))
+            pg.mixer.music.play(-1)
 
     def handle_event(self, event):
         for button in self.buttons:

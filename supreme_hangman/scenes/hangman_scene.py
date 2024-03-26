@@ -101,9 +101,11 @@ class HangmanScene(scenes.Scene):
 
         if text_content == self.word or set(self.word) == self.guessed_letters:
             self.game.set_scene(scenes.WinnerScene(self.game, self.time, self.failed_attempts))
+            return
         elif text_content == "omae wa mou shindeiru":
             self.meme_video.preview()
             self.game.set_scene(scenes.WinnerScene(self.game, self.time, -9999999999))
+            return
         elif text_content not in self.guessed_letters:
             self.failed_attempts += 1
             self.num_fails_display_text.update_message(f"{self.failed_attempts}/{HangmanScene.LIVES}")

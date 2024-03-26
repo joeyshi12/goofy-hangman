@@ -33,4 +33,5 @@ class WinnerScene(scenes.Scene):
             button.render()
 
     def __navigate_to_menu(self):
+        pg.mixer.music.stop()
         self.game.set_scene(scenes.MenuScene(self.game))

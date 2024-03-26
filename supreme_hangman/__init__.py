@@ -9,8 +9,6 @@ game_display: pg.Surface = pg.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 pg.display.set_caption("Supreme Hangman")
 clock: pg.time.Clock = pg.time.Clock()
 
-BUTTON_SOUND = pg.mixer.Sound(os.path.join("assets", "sounds", "button.wav"))
-
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (200, 0, 0)
